@@ -339,6 +339,10 @@ void send_index_page(FILE *f, int status, char *title, char *extra, char *text, 
   if(scaleDeviceAvailable)
     result = str_replace(result, "scaleDeviceAvailable = false", "scaleDeviceAvailable = true");
   
+  result = str_replace(result, "%2F", "/");
+  
+  result = str_replace(result, "%3A", ":");
+  
   fputs(result, f);
 }
 
