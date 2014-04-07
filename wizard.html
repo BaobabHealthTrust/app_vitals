@@ -152,7 +152,7 @@
             var systolic = null;
             var diastolic = null;
             var pulse = null;
-            var destination = '<<destination_url>>';
+            var destination = "<<destination_url>>";
             var active = false;
             var canRead = false;
             var bpDeviceAvailable = false;
@@ -438,12 +438,23 @@
             
             function start(){
                 
+                if(__$("Systolic Pressure"))
+                    __$("Systolic Pressure").value = "";
+                
+                if(__$("Diastolic Pressure"))
+                    __$("Diastolic Pressure").value = "";
+                
+                if(__$("Pulse rate"))
+                    __$("Pulse rate").value = "";
+                
                 showStatus('Starting machine...');
                 
                 var httpRequest = new XMLHttpRequest();
                 httpRequest.onreadystatechange = function() {                  
                     if (!httpRequest) return;
                   
+                    console.log(httpRequest.readyState);
+                    
                     if (httpRequest.readyState == 4 && httpRequest.status == 200) {
                 
                         var result = httpRequest.responseText;
@@ -995,7 +1006,7 @@
                 </div>
                 <div style='display: table-row;'>
                     <div id='nav' style='display: table-cell; border: 1px solid #fff; height: 100px; border-radius: 10px;'>
-                        <button class='button_stop' id='btncancel' onmousedown='' style='float: left;'>
+                        <button class='button_stop' id='btncancel' onmousedown='back()' style='float: left;'>
                             Cancel
                         </button>
                         <button class='button_disabled' id='btndone' onmousedown='' style='float: right;'>
