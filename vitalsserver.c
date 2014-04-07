@@ -47,6 +47,9 @@ unsigned char stop[16]     = {0x16, 0x16, 0x01, 0x30, 0x20, 0x02, 0x53, 0x50, 0x
 unsigned char bp[16]       = {0x16, 0x16, 0x01, 0x30, 0x20, 0x02, 0x52, 0x42, 0x03, 0x10};
 unsigned char pulse[16]    = {0x16, 0x16, 0x01, 0x30, 0x20, 0x02, 0x52, 0x50, 0x03, 0x10};
 
+int bpDeviceAvailable = 0;
+int scaleDeviceAvailable = 0;
+
 // End BP MACHINE variables
 
 //
@@ -323,18 +326,18 @@ char* readFile(char* filename)
 }
 
 void send_index_page(FILE *f, int status, char *title, char *extra, char *text, char *link)
-{
-  char cwd[1024];
-  
-  // Get current directory
-  getcwd(cwd, sizeof(cwd));
-  
+{  
   send_headers(f, status, title, extra, "text/html", -1, -1);
-  // fprintf(f, "\r\n");
   
   char * data = readFile("wizard.html");
   
   char * result = str_replace(data, "<<destination_url>>", link);
+  
+  if(bpDeviceAvailable)
+    result = str_replace(result, "bpDeviceAvailable = false", "bpDeviceAvailable = true");
+  
+  if(scaleDeviceAvailable)
+    result = str_replace(result, "scaleDeviceAvailable = false", "scaleDeviceAvailable = true");
   
   fputs(result, f);
 }
@@ -774,6 +777,8 @@ int main(int argc, char *argv[])
 	    tcsetattr(scale_fd,TCSANOW,&scale_newtio);
            
         memset (&bp_buf, '\0', sizeof bp_buf);
+        
+        scaleDeviceAvailable = 1;
     }
     
     if(bp_dev){
@@ -782,6 +787,7 @@ int main(int argc, char *argv[])
 	
 	    bp_fd = serialport_init(bp_dev, bp_baudrate);
          
+        bpDeviceAvailable = 1;
     }
     
     int sock;

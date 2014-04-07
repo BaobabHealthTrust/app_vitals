@@ -155,6 +155,8 @@
             var destination = '<<destination_url>>';
             var active = false;
             var canRead = false;
+            var bpDeviceAvailable = false;
+            var scaleDeviceAvailable = false;
             
             var target;
             
@@ -389,7 +391,7 @@
             }
             
             function checkScale(){
-                var keys = ['Weight', 'Height'];
+                if(!scaleDeviceAvailable) return;
                 
                 var httpWRequest = new XMLHttpRequest();
                 httpWRequest.onreadystatechange = function() {                  
@@ -610,23 +612,24 @@
                 
                 row1.appendChild(cell1_1);
                 
-                var row2 = document.createElement('tr');
+                if(bpDeviceAvailable){
+                    var row2 = document.createElement('tr');
+                    
+                    tbody.appendChild(row2);
+                    
+                    var cell2_1 = document.createElement('td');
+                    cell2_1.style.backgroundColor = '#fcfac0';
+                    cell2_1.style.borderRadius = '25px';
+                    cell2_1.style.border = '1px dotted #f9f68a';
+                    cell2_1.style.fontSize = '0.6em';
+                    cell2_1.style.textAlign = 'center';
+                    cell2_1.setAttribute('colspan', 3);
                 
-                tbody.appendChild(row2);
+                    cell2_1.innerHTML = 'The connected machine can measure blood pressure and pulse rate. <br/>Place the arm for the patient in the BP machine and press Start.';
                 
-                var cell2_1 = document.createElement('td');
-                cell2_1.style.backgroundColor = '#fcfac0';
-                cell2_1.style.borderRadius = '25px';
-                cell2_1.style.border = '1px dotted #f9f68a';
-                cell2_1.style.fontSize = '0.6em';
-                cell2_1.style.textAlign = 'center';
-                cell2_1.setAttribute('colspan', 3);
-                
-                cell2_1.innerHTML = 'The connected machine can measure blood pressure and pulse rate. <br/>Place the arm for the patient in the BP machine and press Start.';
-                
-                row2.appendChild(cell2_1);
-                
-                
+                    row2.appendChild(cell2_1);
+                } 
+               
                 for(var key in questions[node]){
                     if(key.toLowerCase() == 'section topic' || key.toLowerCase() == 'builder') continue;
                                           
@@ -674,43 +677,45 @@
                              
                 }                
                 
-                var row6 = document.createElement('tr');
-                
-                tbody.appendChild(row6);
-                
-                var cell6_1 = document.createElement('td');
-                cell6_1.setAttribute('align', 'right');
-                
-                row6.appendChild(cell6_1);
-                
-                var btnStart = document.createElement('button');
-                btnStart.setAttribute('class', 'button_start');
-                btnStart.id = 'btnstart';
-                
-                btnStart.innerHTML = 'Start';
-                
-                btnStart.onmousedown = function(){
-                    start();
+                if(bpDeviceAvailable){
+                    var row6 = document.createElement('tr');
+                    
+                    tbody.appendChild(row6);
+                    
+                    var cell6_1 = document.createElement('td');
+                    cell6_1.setAttribute('align', 'right');
+                    
+                    row6.appendChild(cell6_1);
+                    
+                    var btnStart = document.createElement('button');
+                    btnStart.setAttribute('class', 'button_start');
+                    btnStart.id = 'btnstart';
+                    
+                    btnStart.innerHTML = 'Start';
+                    
+                    btnStart.onmousedown = function(){
+                        start();
+                    }
+                    
+                    cell6_1.appendChild(btnStart);
+                    
+                    var cell6_2 = document.createElement('td');
+                    cell6_2.setAttribute('colspan', 2);
+                    
+                    row6.appendChild(cell6_2);
+                    
+                    var btnRefresh = document.createElement('button');
+                    btnRefresh.setAttribute('class', 'button_disabled');
+                    btnRefresh.id = 'btnrefresh';
+                    
+                    btnRefresh.innerHTML = 'Refresh Results';
+                    
+                    btnRefresh.onmousedown = function(){
+                        if(canRead){refresh();}
+                    }
+                    
+                    cell6_2.appendChild(btnRefresh);
                 }
-                
-                cell6_1.appendChild(btnStart);
-                
-                var cell6_2 = document.createElement('td');
-                cell6_2.setAttribute('colspan', 2);
-                
-                row6.appendChild(cell6_2);
-                
-                var btnRefresh = document.createElement('button');
-                btnRefresh.setAttribute('class', 'button_disabled');
-                btnRefresh.id = 'btnrefresh';
-                
-                btnRefresh.innerHTML = 'Refresh Results';
-                
-                btnRefresh.onmousedown = function(){
-                    if(canRead){refresh();}
-                }
-                
-                cell6_2.appendChild(btnRefresh);
                 
             }
             
