@@ -756,7 +756,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    if(!scale_dev && !bp_dev) usage(argc,argv);
+    // if(!scale_dev && !bp_dev) usage(argc,argv);
 
     if(scale_dev){
 	    printf("DEBUG: Initialising scale device on %s\n",scale_dev);
