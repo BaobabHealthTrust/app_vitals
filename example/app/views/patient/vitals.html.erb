@@ -1,0 +1,38 @@
+<table cellspacing="0" cellpadding="15" style="margin: auto;">
+    <tr>
+        <th style="border-bottom: 1px #000 solid; font-size: 1.3em" colspan="2">
+            Vitals readings returned
+        </th>
+    </tr>
+    <tr>
+        <th style="border-bottom: 1px #000 solid; border-right: 1px #000 solid;">
+            Reading
+        </th>
+        <th style="border-bottom: 1px #000 solid;">
+            Result
+        </th>
+    </tr>
+    
+    <% params.each do |key, value| %>
+    
+        <% next if key.downcase.match(/controller|action/) %>
+    
+        <tr>
+            <th align="right" style="border-bottom: 1px #000 solid; border-right: 1px #000 solid;">
+                <%= key %>:
+            </th>
+            <td style="border-bottom: 1px #000 solid;">
+                <%= value %>
+            </td>
+        </tr>
+    
+    <% end %>
+    
+    <tr>
+        <td colspan="2">
+           <button class='button_start' id='btndone' onmousedown='window.location="/";' style='float: right;'>
+                Finish
+            </button>
+        </td>
+    </tr>
+</table>
