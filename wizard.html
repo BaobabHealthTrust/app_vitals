@@ -881,6 +881,30 @@
                 
                 document.body.appendChild(form);
                 
+                  if (destination.split("?")){
+                   var patient_id = destination.split("?")[1].split("&")[0].split("=")[1]
+                   var user_id = destination.split("?")[1].split("&")[1].split("=")[1]
+
+	        
+                    var input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = "patient_id";
+
+                        input.value = patient_id;
+
+                        form.appendChild(input);
+
+                    var input = document.createElement('input');
+                        input.type = 'text';
+                        input.name = "user_id";
+
+                        input.value = user_id;
+
+                        form.appendChild(input);
+                }
+                document.body.appendChild(form);
+
+                
                 for(var level in questions){
                     for(var key in questions[level]){
                         if(key.toLowerCase() == 'section topic' || key.toLowerCase() == 'builder' || key.toLowerCase() == 'actions') continue;
