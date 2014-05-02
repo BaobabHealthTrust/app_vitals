@@ -159,7 +159,7 @@
             var scaleDeviceAvailable = false;
             
             var target;
-            
+		
             var currentPage = 1;
             
             var questions = {
@@ -871,7 +871,11 @@
                     }                 
                 }
             }
-            
+             function cancel(){
+                newLocation = destination + '&cancel=true'
+               // alert(newLocation)
+		window.location = newLocation
+		}
             function submitResults(){
                 if(__$('frm')) return;
                 
@@ -1030,7 +1034,7 @@
                 </div>
                 <div style='display: table-row;'>
                     <div id='nav' style='display: table-cell; border: 1px solid #fff; height: 100px; border-radius: 10px;'>
-                        <button class='button_stop' id='btncancel' onmousedown='back()' style='float: left;'>
+                        <button class='button_stop' id='btncancel' onmousedown='cancel();' style='float: left;'>
                             Cancel
                         </button>
                         <button class='button_disabled' id='btndone' onmousedown='' style='float: right;'>
