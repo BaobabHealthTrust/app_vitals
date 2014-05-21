@@ -185,7 +185,8 @@
                   },
                 5:{
                         'Section topic':'Measured Respiratory Rate',
-                        'Respiratory Rate':null
+                        'Respiratory Rate':null,
+                        'actions':'checkValue()'
                   }
             };
             
@@ -193,6 +194,9 @@
             
             function __$(id){
                 return document.getElementById(id);
+            }
+            
+            function checkValue(){
             }
             
             function checkCtrl(obj){
@@ -210,6 +214,18 @@
                 return [w, h, t, l];
             }
      
+     	   function setLimits(value, absMin, absMax, minmum, maxmum){
+     	   	if ((value < minmum && value > absMin) || (value > maxmum && value < absMax)) {
+     	   		return "value out of normal range";
+     	   	} 
+     	   	else if ((value < absMin) || (value > absMax)){
+     	   		return "value completely out of normal range";
+     	   	}
+     	   	else{
+     	   		return "";
+     	   	}
+     	   }
+     
             function showKeyboard(ctrl, disabled){
                 if(__$('keyboard')){
                     
@@ -217,7 +233,7 @@
                     
                 } else {
                     target = ctrl;
-                
+                	
                     var pos = checkCtrl(ctrl);
                     
                     if(typeof(disabled) == 'undefined') disabled = {};
@@ -290,6 +306,10 @@
                                         }
                                     } else {
                                         target.value += this.innerHTML.trim();
+                                        
+                                           if (target.id == 'Respiratory Rate'){
+		                            	setLimits(target.value, 0, 250, 8, 61)
+		                            }
                                     }
                                     
                                     if(target.value.trim().match(/\./)){
@@ -299,6 +319,7 @@
                                     } else {
                                         __$('.').setAttribute('class', 'button_refresh');
                                     }
+                                    
                                 }
                             }
                             
@@ -402,7 +423,7 @@
                         var result = httpWRequest.responseText;
              
                         if(__$('Weight')){
-                            __$('Weight').value = result;
+                            __$('Weight').value = parseFloat(result).toFixed(1);
                         }
              
                     }
@@ -422,7 +443,7 @@
                         var result = httpHRequest.responseText;
              
                         if(__$('Height')){
-                            __$('Height').value = result;
+                            __$('Height').value = parseInt(result);
                         }
              
                     }
@@ -854,7 +875,7 @@
                 }
                 
                 if(pos < Object.keys(questions).length){
-                    __$('btndone').innerHTML = 'Next';
+                   __$('btndone').innerHTML = 'Next';
                     
                     __$('btndone').onmousedown = function(){
                         if(active){
